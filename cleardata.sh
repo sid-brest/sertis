@@ -10,7 +10,9 @@ else
     OutputPath="$1/$OutputFileName"
 # Remove lines start unused characters with sed
     sed -i '/^$/d' $InputPath
-    sed '/\d{5}$/!d' $InputPath > $OutputPath
+    awk '/(^.{15}\s.{5}\s.*[0-9]{5}$)|(^.{3}\s.{4}\s[0-9]{2})/' $InputPath > $OutputPath
+    # awk '/^.{3}\s.{4}\s[0-9]{2}/' $InputPath > okrb.txt
+    # sed '/\d{5}$/!d' $InputPath > $OutputPath
     # sed '/(^.{15}\s.{5}\s.*\d{5}$)|(^.{3}\s.{4}\s\d{2}\.\d{2}\.\d{2})/!d' $InputPath > $OutputPath
 fi
 
