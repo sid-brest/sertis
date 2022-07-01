@@ -16,7 +16,7 @@ sed -i -e 's/Регистрационный номер	//g' \
        -e 's/Код ОКРБ	//g' \
 $OutputFileName
 # Print different files with different info inside
-awk 'BEGIN {FS=" "} /^[0-9]{2}/ {print $1}' $OutputPath > okrb.txt
-awk 'BEGIN {FS=" "} /[0-9]{5}$/ {print}' $OutputPath > regnumbers.txt
+awk 'BEGIN {FS=" "} /^[0-9]{2}/ {print $1}' $OutputPath > $path/okrb.txt
+awk 'BEGIN {FS=" "} /[0-9]{5}$/ {print}' $OutputPath > $path/regnumbers.txt
 rm clear.txt
 fi
