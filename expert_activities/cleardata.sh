@@ -1,7 +1,8 @@
 #!/bin/bash
+# Script selects certificate number & product type code from the data.txt
 # Check empty argument
 if [ -z "$1" ]; then
-    echo "No argument provided. Type path, please!"
+    echo "No argument provided. Type path to file data.txt, please!"
 else
     path="$1"
     InputFileName="data.txt"
