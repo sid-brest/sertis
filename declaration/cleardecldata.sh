@@ -5,18 +5,17 @@ if [ -z "$1" ]; then
 else
     path="$1"
     InputFileName="data.txt"
-    OutputFileName="clear.txt"
+    OutputFileName="clear.csv"
     InputPath="$1/$InputFileName"
     OutputPath="$1/$OutputFileName"
 # Remove empty lines
     sed -i '/^$/d' $InputPath
-# Leave lines start with registration number and okrb
-    awk '/(^.{15}\s.{5}\s.*[0-9]{5}$)|(^.{3}\s.{4}\s[0-9]{2})/' $InputPath > $OutputPath
-sed -i -e 's/Регистрационный номер	//g' \
-       -e 's/Код ОКРБ	//g' \
-$OutputFileName
-# Print different files with different info inside
-awk 'BEGIN {FS=" "} /^[0-9]{2}/ {print $1}' $OutputPath > $path/okrb.txt
-awk 'BEGIN {FS=" "} /[0-9]{5}$/ {print}' $OutputPath > $path/regnumbers.txt
-rm clear.txt
+# Clear data.txt with different conditions
+awk 'BEGIN {FS=" "} /^.{15}\s.{5}\s.*[0-9]{5}$/ {print}' $InputPath > $path/regnumbers.txt
+sed -i 's/Регистрационный номер	//g' $path/regnumbers.txt
+awk 'BEGIN {FS=" "} /^[24.]{4}.*[0-9]{2}.*$/ {print}' $InputPath > $path/days.txt
+sed -i 's/2.4. Дата регистрации	//g' $path/days.txt
+# Combine data into a single CSV-file
+paste -d'\t' regnumbers.txt days.txt  > $OutputFileName
+rm regnumbers.txt days.txt
 fi
