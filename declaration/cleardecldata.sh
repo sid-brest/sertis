@@ -16,7 +16,6 @@ else
     Expert="$1/expert.txt"
 # Remove empty lines and 10 lines after match 
     sed -i -e '/^$/d' \
-# Remove 10 lines after match 
            -e '/Единица объекта оценки соответствия №/,+10d' \
 $InputPath
 # Replace text with new line symbols 
