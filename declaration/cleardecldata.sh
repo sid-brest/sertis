@@ -16,11 +16,11 @@ else
     Expert="$1/expert.txt"
 # Remove empty lines and 10 lines after match 
     sed -i -e '/^$/d' \
+# Remove 10 lines after match 
            -e '/Единица объекта оценки соответствия №/,+10d' \
 $InputPath
 # Replace text with new line symbols 
-    # perl -i -p -e 's/(Объект оценки соответствия №[1]\n)|(Объект оценки соответствия №[1]\s\n)/Объект оценки соответствия /g' $InputPath
-    perl -p -e 's/^[215.]{5}.*\n/2.15. ФИО эксперта (эксперта-аудитора) /g' $InputPath > newdata.txt
+perl -p -e 's/^[215.]{5}.*\n/2.15. ФИО эксперта (эксперта-аудитора) /g' $InputPath > newdata.txt
 # Clear data.txt with different conditions
 awk 'BEGIN {FS=" "} /^.{15}\s.{5}\s.*[0-9]{5}$/ {print}' $InputPath > $Regnumbers
 sed -i 's/Регистрационный номер	//g' $Regnumbers
@@ -36,6 +36,7 @@ awk 'BEGIN {FS=" "} /^.{4}\s.{8}\s.{2}\s.{7}\s.{6}\s.{12}.*$/ {print}' $InputPat
 sed -i 's/Иные сведения об объекте оценки соответствия, обеспечивающие его идентификацию	//g' $Otherinfo
 awk 'BEGIN {FS=" "} /^[2]{1}\.[1]{1}[5]{1}\.\s.*$/ {print}' newdata.txt > $Expert
 sed -i 's/2.15. ФИО эксперта (эксперта-аудитора) //g' $Expert
+# Change full initials to abbreviated initials
 awk 'BEGIN {FS=" "} {print substr($2,1,1)"."substr($3,1,1)"."$1}' $Expert > experttemp.txt
 # Combine data into a single CSV-file
 paste -d' ' $Objects $Otherinfo > ObjectsOtherinfo.txt
