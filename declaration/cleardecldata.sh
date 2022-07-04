@@ -36,8 +36,9 @@ awk 'BEGIN {FS=" "} /^.{4}\s.{8}\s.{2}\s.{7}\s.{6}\s.{12}.*$/ {print}' $InputPat
 sed -i 's/Иные сведения об объекте оценки соответствия, обеспечивающие его идентификацию	//g' $Otherinfo
 awk 'BEGIN {FS=" "} /^[2]{1}\.[1]{1}[5]{1}\.\s.*$/ {print}' newdata.txt > $Expert
 sed -i 's/2.15. ФИО эксперта (эксперта-аудитора) //g' $Expert
+awk 'BEGIN {FS=" "} {print substr($2,1,1)"."substr($3,1,1)"."$1}' $Expert > experttemp.txt
 # Combine data into a single CSV-file
 paste -d' ' $Objects $Otherinfo > ObjectsOtherinfo.txt
-paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt $Expert > $OutputFileName
-rm $Regnumbers $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt newdata.txt $Expert
+paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt experttemp.txt > $OutputFileName
+rm $Regnumbers $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt newdata.txt experttemp.txt $Expert
 fi
