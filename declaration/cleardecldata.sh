@@ -12,8 +12,11 @@ else
     Days="$1/days.txt"
     Applicants="$1/applicants.txt"
     Objects="$1/objects.txt"
-# Remove empty lines
-    sed -i '/^$/d' $InputPath
+    Otherinfo="$1/otherinfo.txt"
+# Remove empty lines and 10 lines after match 
+    sed -i -e '/^$/d' \
+           -e '/Единица объекта оценки соответствия №/,+10d' \
+$InputPath
 # Replace text with new line symbols 
     perl -i -p -e 's/(Объект оценки соответствия №[1]\n)|(Объект оценки соответствия №[1]\s\n)/Объект оценки соответствия /g' $InputPath
 # Clear data.txt with different conditions
@@ -27,7 +30,10 @@ sed -i '/^$/d' $Applicants
 awk 'BEGIN {FS=" "} /^.{6}\s.{6}\s.{12}\s.{12}\s.{7}\s.{6}\s.{12}\s.*$/ {print}' $InputPath > $Objects
 sed -i 's/Объект оценки соответствия Наименование объекта оценки соответствия	//g' $Objects
 sed -i '/^$/d' $Objects
+awk 'BEGIN {FS=" "} /^.{4}\s.{8}\s.{2}\s.{7}\s.{6}\s.{12}.*$/ {print}' $InputPath > $Otherinfo
+sed -i 's/Иные сведения об объекте оценки соответствия, обеспечивающие его идентификацию	//g' $Otherinfo
 # Combine data into a single CSV-file
-paste -d'\t' $Regnumbers $Days $Applicants $Objects > $OutputFileName
-rm $Regnumbers $Days $Applicants $Objects
+paste -d' ' $Objects $Otherinfo > ObjectsOtherinfo.txt
+paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt > $OutputFileName
+rm $Regnumbers $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt
 fi
