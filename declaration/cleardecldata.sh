@@ -42,7 +42,8 @@ sed -i 's/Иные сведения об объекте оценки соотв�
 awk 'BEGIN {FS=" "} /^[2]{1}\.[1]{1}[5]{1}\.\s.*$/ {print}' newdata.txt > $Expert
 sed -i 's/2.15. ФИО эксперта (эксперта-аудитора) //g' $Expert
     # Change full initials to abbreviated initials
-awk 'BEGIN {FS=" "} {print substr($2,1,1)"."substr($3,1,1)"."$1}' $Expert > experttemp.txt
+awk 'BEGIN {FS=" "} {print substr($2,1,1)"."substr($3,1,1)"."$1}' $Expert > experttemp
+mv experttemp $Expert
 # Focus on Address
 awk 'BEGIN {FS=" "} /^Адрес заявителя.*$/ {print}' $InputPath > $Address
 sed -i 's/Адрес заявителя	(BY) Беларусь, (1) Место нахождения (адрес юр. лица), //g' $Address
@@ -72,6 +73,6 @@ sed -i 's/^\(Область\) \([^ ,]*\)/\2 \1/' $Address
 sed -i 's/Область/обл\./g' $Address
 # Combine data into a single CSV-file
 paste -d' ' $Objects $Otherinfo > ObjectsOtherinfo.txt
-paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt experttemp.txt $Address > $OutputFileName
-rm $Regnumbers $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt newdata.txt experttemp.txt $Expert $Address
+paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt $Address > $OutputFileName
+rm $Regnumbers $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt newdata.txt $Expert $Address
 fi
