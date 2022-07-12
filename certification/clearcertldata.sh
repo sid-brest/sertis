@@ -15,6 +15,7 @@ else
     Otherinfo="$1/otherinfo.txt"
     Expert="$1/expert.txt"
     Address="$1/address.txt"
+    Blank="$1/blank.txt"
 # Remove empty lines and 10 lines after match 
     sed -i -e '/^$/d' \
            -e '/Единица объекта оценки соответствия №/,+10d' \
@@ -43,6 +44,9 @@ awk 'BEGIN {FS=" "} /^[2]{1}\.[1]{1}[5]{1}\.\s.*$/ {print}' newdata.txt > $Exper
 sed -i 's/2.15. ФИО эксперта (эксперта-аудитора) //g' $Expert
     # Change full initials to abbreviated initials
 awk 'BEGIN {FS=" "} {print substr($2,1,1)"."substr($3,1,1)"."$1}' $Expert > experttemp.txt
+# Focus on Forms
+awk 'BEGIN {FS=" "} /^[2]{1}\.[7]{1}\.\s.*$/ {print}' $InputPath > $Blank
+sed -i 's/2.7. Типографский номер бланка сертификата	//g' $Blank
 # Focus on Address
 awk 'BEGIN {FS=" "} /^Адрес заявителя.*$/ {print}' $InputPath > $Address
 sed -i 's/Адрес заявителя	(BY) Беларусь, (1) Место нахождения (адрес юр. лица), //g' $Address
@@ -68,8 +72,10 @@ sed -i 's/ Почтовый//g' $Address
 sed -i 's/\s*$//g' $Address
 sed -i 's/\,*$//g' $Address
 sed -i 's/ *| */|/g' $Address
+sed -i 's/^\(Область\) \([^ ,]*\)/\2 \1/' $Address
+sed -i 's/Область/обл\./g' $Address
 # Combine data into a single CSV-file
 paste -d' ' $Objects $Otherinfo > ObjectsOtherinfo.txt
-paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt experttemp.txt $Address > $OutputFileName
-rm $Regnumbers $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt newdata.txt experttemp.txt $Expert $Address
+paste -d'\t' $Regnumbers $Blank $Days $Applicants ObjectsOtherinfo.txt experttemp.txt $Address > $OutputFileName
+rm $Regnumbers $Blank $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt newdata.txt experttemp.txt $Expert $Address
 fi
