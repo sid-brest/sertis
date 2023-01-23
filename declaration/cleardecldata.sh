@@ -73,6 +73,6 @@ sed -i 's/^\(Область\) \([^ ,]*\)/\2 \1/' $Address
 sed -i 's/Область/обл\./g' $Address
 # Combine data into a single CSV-file
 paste -d' ' $Objects $Otherinfo > ObjectsOtherinfo.txt
-paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt $Address > $OutputFileName
+paste -d'\t' $Regnumbers $Days $Applicants ObjectsOtherinfo.txt $Address $Expert > $OutputFileName
 rm $Regnumbers $Days $Applicants $Objects $Otherinfo ObjectsOtherinfo.txt newdata.txt $Expert $Address
 fi
