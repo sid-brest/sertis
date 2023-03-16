@@ -1,0 +1,15 @@
+'Excel Macro: saves sheet as PDF file into user's Downloads directory using composite name from current file name & sheet's name.?
+Sub SaveAsPDF()
+    Dim ws As Worksheet
+    Dim FileName As String
+    Set ws = ActiveSheet
+    FileName = Replace(Left(ActiveWorkbook.Name, Len(ActiveWorkbook.Name) - Len(Split(ActiveWorkbook.Name, ".")(UBound(Split(ActiveWorkbook.Name, "."))))), ".", "")
+    SavePath = Environ("UserProfile") & "\Downloads\"
+
+    ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, _
+        FileName:=SavePath & FileName & "_" & ws.Name, _
+        Quality:=xlQualityStandard, _
+        IncludeDocProperties:=True, _
+        IgnorePrintAreas:=False, _
+        OpenAfterPublish:=False
+End Sub
