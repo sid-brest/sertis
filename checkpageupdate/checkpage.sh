@@ -12,8 +12,9 @@ timeout_seconds=10
 # Fetch the content of the web page and search for the text
 if curl -s --max-time "$timeout_seconds" "$url" | grep -q "$text_to_search"; then
   echo "The web page contains the text '$text_to_search'"
-else
-  echo "The web page does not contain the text '$text_to_search'"
+  else
+  echo "!!!!!!!  The web page does not contain the text '$text_to_search' !!!!!!!"
+  
 fi
 
 # Use watch command to run the script every 1 minute
