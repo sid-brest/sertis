@@ -10,8 +10,19 @@ interface_name = 'eth3'
 metric = 1
 
 # Load the list of IP addresses in CIDR notation from a file
-with open('cidr_list.txt', 'r') as f:
+with open('cidr_list_ipv4.txt', 'r') as f:
     cidr_list = [line.strip() for line in f]
+
+# Generate the route information in the desired format
+route_info = []
+for cidr in cidr_list:
+    network = ipaddress.ip_network(cidr)
+    route_info.append(f"{network}\t{network.network_address}\t{network.netmask}\t{gateway_ip}")
+
+# Save the route information to a file
+with open('route_info.txt', 'w') as f:
+    for info in route_info:
+        f.write(f"{info}\n")
 
 # Generate the ip route add commands
 commands = []
@@ -21,8 +32,11 @@ for cidr in cidr_list:
     commands.append(command)
 
 # Save the commands to a bash script file
-with open('ip_routes.sh', 'w') as f:
+with open('ip_routes_ipv4.sh', 'w') as f:
     for command in commands:
         f.write(f"{command}\n")
+
+
+        
 
 # cat ip_routes.sh | ssh -p 2222 root@86.57.251.161 'bash -s'
