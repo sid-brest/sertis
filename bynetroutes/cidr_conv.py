@@ -17,7 +17,7 @@ with open('cidr_list.txt', 'r') as f:
 commands = []
 for cidr in cidr_list:
     network = ipaddress.ip_network(cidr)
-    command = f"ip route add {cidr} via {gateway_ip} dev {interface_name} metric {metric} onlink"
+    command = f"ip route add {cidr} via {gateway_ip} dev {interface_name} proto unspec metric {metric} onlink"
     commands.append(command)
 
 # Save the commands to a bash script file
