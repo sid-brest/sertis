@@ -22,6 +22,8 @@ Otherinfo="$path/otherinfo.txt"
 Expert="$path/expert.txt"
 Address="$path/address.txt"
 Blank="$path/blank.txt"
+Tnved="$path/tnved.txt"
+Okp="$path/okp.txt"
 
 # Remove empty lines and 10 lines after match.
 sed -i -e '/^$/d' \
@@ -64,6 +66,14 @@ awk 'BEGIN {FS=" "} {print substr($2,1,1)"."substr($3,1,1)"."$1}' "$Expert" > ex
 awk 'BEGIN {FS=" "} /^[2]{1}\.[7]{1}\.\s.*$/ {print}' "$InputPath" > "$Blank"
 sed -i 's/2.7. Типографский номер бланка сертификата	//g' "$Blank"
 
+# Focus on TN VED.
+awk 'BEGIN {FS=" "} /Код товара по ТН ВЭД ЕАЭС/ {found=0; for(i=1; i<=NF; i++) {if($i ~ /^[0-9]{4,10}$/) {print $i; found=1}} if(found==0) print " "}' "$InputPath" > "$Tnved"
+sed -i 's/Код товара по ТН ВЭД ЕАЭС	//g' "$Tnved"
+
+# Focus on OKP.
+awk 'BEGIN {FS=" "} /Код ОКРБ/ {found=0; for(i=1; i<=NF; i++) {if($i ~ /^[0-9]{2}\.[0-9]{2}\.[0-9]{1,2}$/){print $i; found=1}} if(found==0) print ""}' "$InputPath" > "$Okp"
+sed -i 's/Код ОКРБ	//g' "$Okp"
+
 # Focus on Address.
 awk 'BEGIN {FS=" "} /^Адрес заявителя.*$/ {print}' "$InputPath" > "$Address"
 sed -i 's/Адрес заявителя	(BY) Беларусь, (1) Место нахождения (адрес юр. лица), //g' "$Address"
@@ -93,7 +103,7 @@ sed -i 's/^\(Область\) \([^ ,]*\)/\2 \1/' "$Address"
 sed -i 's/Область/обл\./g' "$Address"
 
 # Combine data into a single CSV-file.
-paste -d'\t' "$Regnumbers" "$Blank" "$Days" "$Applicants" "$Address" <(paste -d' ' "$Objects" "$Otherinfo") experttemp.txt > "$OutputPath"
+paste -d'\t' "$Regnumbers" "$Blank" "$Days" "$Applicants" "$Tnved" "$Okp" "$Address" <(paste -d' ' "$Objects" "$Otherinfo") experttemp.txt > "$OutputPath"
 
 # Remove temporary files.
-rm newdata.txt experttemp.txt "$Regnumbers" "$Blank" "$Days" "$Applicants" "$Objects" "$Otherinfo" "$Expert" "$Address"
+rm newdata.txt experttemp.txt "$Regnumbers" "$Blank" "$Days" "$Applicants" "$Objects" "$Otherinfo" "$Expert" "$Address" "$Tnved" "$Okp"
