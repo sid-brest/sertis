@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Exit immediately if any command exits with a non-zero status.
-set -e
-
 if [ -z "$1" ]; then
   echo "No argument provided. Type path to file data.txt, please!"
   exit 1
@@ -25,10 +22,8 @@ Blank="$path/blank.txt"
 Tnved="$path/tnved.txt"
 Okp="$path/okp.txt"
 
-# Remove empty lines and 10 lines after match.
-sed -i -e '/^$/d' \
-       -e '/Единица объекта оценки соответствия №/,+10d' \
-  "$InputPath"
+# Remove empty lines.
+sed -i '/^$/d' \ "$InputPath"
 
 # Replace text with new line symbols.
 perl -p -e 's/^[215.]{5}.*\n/2.15. ФИО эксперта (эксперта-аудитора) /g' "$InputPath" > newdata.txt
