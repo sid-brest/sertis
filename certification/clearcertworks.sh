@@ -36,5 +36,8 @@ sed -nE '/2\.7\. Типографский номер бланка сертифи
 sed -nE '/(Объект|Наименование) объекта оценки соответствия[ \t]/s/(Объект|Наименование) объекта оценки соответствия[ \t]//p' "$InputPath" | sed -E 's/ +([a-zA-Z])/\1/g' | sed '/^\s*$/d' > "$Production"
 sed -nE '/Иные сведения об объекте оценки соответствия, обеспечивающие его идентификацию/s/Иные сведения об объекте оценки соответствия, обеспечивающие его идентификацию//p; /./!d; N; s/\n/ /' "$InputPath" | sed 's/^[ \t]*//' > "$Otherinfo"
 
+# Combine data into a single CSV-file.
+ paste -d'\t' "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" <(paste -d' ' "$Production" "$Otherinfo")  > "$OutputPath"
+
 # Remove temporary files.
-# rm newdata.txt experttemp.txt "$Regnumbers" "$Blank" "$Days" "$Applicants" "$Objects" "$Otherinfo" "$Expert" "$Address" "$Tnved" "$Okp"
+rm "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" "$Production" "$Otherinfo"
