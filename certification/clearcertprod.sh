@@ -39,7 +39,7 @@ sed -nE '/^2\.15\./{n;p}' "$InputPath" | awk '{print $1, substr($2,1,1) "." subs
 
 
 # Combine data into a single CSV-file.
- paste -d'\t' "$Regnumbers" "$Days" "$Period"  > "$OutputPath" 
+ paste -d'\t' "$Regnumbers" "$Days" "$Period" "$Expert" > "$OutputPath" 
  
 # Remove temporary files.
 # rm "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" "$Production" "$Otherinfo"
