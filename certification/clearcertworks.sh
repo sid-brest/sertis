@@ -37,7 +37,7 @@ sed -nE '/(Объект|Наименование) объекта оценки с
 sed -nE '/Иные сведения об объекте оценки соответствия, обеспечивающие его идентификацию/s/Иные сведения об объекте оценки соответствия, обеспечивающие его идентификацию//p; /./!d; N; s/\n/ /' "$InputPath" | sed 's/^[ \t]*//' > "$Otherinfo"
 
 # Combine data into a single CSV-file.
- paste -d'\t' "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" <(paste -d' ' "$Production" "$Otherinfo")  > "$OutputPath"
+ paste -d'\t' "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" <(paste -d' ' "$Production" "$Otherinfo") > "$OutputPath"
 
 # Remove temporary files.
 rm "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" "$Production" "$Otherinfo"
