@@ -41,4 +41,4 @@ sed -nE '/Иные сведения об объекте оценки соотв�
  paste -d'\t' "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" <(paste -d' ' "$Production" "$Otherinfo") | iconv -f UTF-8 -t windows-1251 > "$OutputPathRu"
 
 # Remove temporary files.
-rm "$Regnumbers" "$Blank" "$Days" "$Period" "$Applicants" "$Fullapplicants" "$Objects" "$Production" "$Otherinfo"
+find $1 -name "*.txt" -not -name "*data*.txt" -type f -delete
