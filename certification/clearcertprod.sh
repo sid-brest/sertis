@@ -45,4 +45,4 @@ sed -nE '/^Статус действия сертификата.*, с/s/^Ста�
  paste -d'\t' "$Applicants" "$Regnumbers" "$Days" "$Period" "$Status" "$Okp"  > "$OutputPath" 
  
 # Remove temporary files.
-# find $1 -name "*.txt" -not -name "*data*.txt" -type f -delete
+find $1 -name "*.txt" -not -name "*data*.txt" -type f -delete
