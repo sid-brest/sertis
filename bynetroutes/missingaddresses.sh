@@ -4,13 +4,9 @@
 addr_file="addr.txt"
 winroute_file="winroute.cfg"
 output_file="missingaddr.txt"
-addr_output_file="addr_file.txt"
 
 # Remove spaces and empty lines from addr.txt
 sed -i '/^\s*$/d; s/ //g' "$addr_file"
-
-# Save addr_file value to addr_file.txt
-echo "$addr_file" > "$addr_output_file"
 
 # Remove missingaddr.txt if it already exists
 if [ -f "$output_file" ]; then
