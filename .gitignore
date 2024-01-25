@@ -21,3 +21,4 @@ certification/clearRu.csv
 bynetroutes/addr.txt
 bynetroutes/winroute.cfg
 bynetroutes/missingaddr.txt
+bynetroutes/missingaddrwihtmask.txt
